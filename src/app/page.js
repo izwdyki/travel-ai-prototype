@@ -1,4 +1,4 @@
-import TravelPlanner from '../components/TravelPlanner';
+import TravelPlanner from '../../components/TravelPlanner';
 
 export default function Home() {
   return (
