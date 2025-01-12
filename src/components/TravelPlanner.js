@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react';
-import { Calendar, MapPin } from 'lucide-react';
+import { Calendar, MapPin, Wallet } from 'lucide-react';
 
 const TravelPlanner = () => {
   const [step, setStep] = useState(1);
@@ -13,35 +13,39 @@ const TravelPlanner = () => {
   const recommendations = [
     {
       title: "伝統工芸体験と地酒を楽しむ贅沢な2日間",
+      image: "/api/placeholder/600/400",
       location: "新潟県燕市",
       description: "伝統的な金属加工の技術を体験し、地元の酒蔵で試飲を楽しむプラン",
       weather: "晴れ - 21℃",
       events: ["つばめ物づくりフェア", "酒蔵開放デー"],
-      price: "98,000円"
+      price: ""
     },
     {
       title: "山間の秘湯と郷土料理の探訪",
+      image: "/api/placeholder/600/400",
       location: "島根県奥出雲町",
       description: "たたら製鉄の歴史を学び、地元の方と郷土料理作りを体験",
       weather: "曇り - 19℃",
       events: ["たたら操業実演", "奥出雲そば祭り"],
-      price: "85,000円"
+      price: ""
     },
     {
       title: "海女文化と真珠養殖体験の旅",
+      image: "/api/placeholder/600/400",
       location: "三重県鳥羽市",
       description: "現役の海女さんから話を聞き、真珠養殖場で海の恵みを学ぶ。新鮮な海産物を使った郷土料理も堪能。",
       weather: "晴れ - 24℃",
       events: ["海女文化体験", "真珠養殖見学会"],
-      price: "115,000円"
+      price: ""
     },
     {
       title: "山形の老舗酒蔵と果樹園めぐり",
+      image: "/api/placeholder/600/400",
       location: "山形県天童市",
       description: "200年以上の歴史を持つ酒蔵での特別試飲会と、果樹園でのもぎ取り体験。",
       weather: "晴れ - 18℃",
       events: ["酒蔵開放デー", "さくらんぼ狩り"],
-      price: "92,000円"
+      price: ""
     }
   ];
 
@@ -54,6 +58,7 @@ const TravelPlanner = () => {
     <div className="p-6 space-y-8">
       <div className="space-y-4">
         <label className="text-lg font-medium flex items-center gap-2">
+          <Wallet className="w-5 h-5 text-red-600" />
           <span className="text-red-600">予算設定</span>
         </label>
         <div className="space-y-4">
@@ -65,7 +70,6 @@ const TravelPlanner = () => {
             value={formData.budget}
             onChange={(e) => setFormData({...formData, budget: Number(e.target.value)})}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600"
-            aria-label="予算設定"
           />
           <div className="text-center text-red-600 font-medium">
             {(formData.budget / 10000).toFixed(1)}万円
@@ -76,7 +80,7 @@ const TravelPlanner = () => {
       <div className="space-y-4">
         <label className="text-lg font-medium flex items-center gap-2">
           <Calendar className="w-5 h-5 text-red-600" />
-          旅行日数
+          <span className="text-red-600">旅行日数</span>
         </label>
         <div className="space-y-4">
           <input
@@ -86,10 +90,9 @@ const TravelPlanner = () => {
             value={formData.duration}
             onChange={(e) => setFormData({...formData, duration: Number(e.target.value)})}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600"
-            aria-label="旅行日数"
           />
           <div className="text-center text-red-600 font-medium">
-            {formData.duration}日
+            {formData.duration}日間
           </div>
         </div>
       </div>
@@ -97,7 +100,6 @@ const TravelPlanner = () => {
       <button 
         className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors"
         onClick={() => setStep(2)}
-        aria-label="次のステップへ"
       >
         次へ進む
       </button>
@@ -124,7 +126,6 @@ const TravelPlanner = () => {
                   : [...formData.interests, interest];
                 setFormData({...formData, interests: newInterests});
               }}
-              aria-pressed={formData.interests.includes(interest)}
             >
               {interest}
             </button>
@@ -136,7 +137,6 @@ const TravelPlanner = () => {
         <button 
           onClick={() => setStep(1)}
           className="border-2 border-red-600 text-red-600 hover:bg-red-50 py-2 px-4 rounded-lg transition-colors"
-          aria-label="前のステップに戻る"
         >
           戻る
         </button>
@@ -144,7 +144,6 @@ const TravelPlanner = () => {
           className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors"
           onClick={() => setStep(3)}
           disabled={formData.interests.length === 0}
-          aria-label="プランを探す"
         >
           プランを探す
         </button>
@@ -163,6 +162,7 @@ const TravelPlanner = () => {
           <div className="p-6">
             <div className="space-y-2 mb-4">
               <h3 className="text-xl font-bold text-gray-800">{rec.title}</h3>
+              <img src={rec.image} alt={rec.title} className="w-full h-48 object-cover rounded-lg mt-2" />
               <div className="flex items-center gap-1 text-gray-600">
                 <MapPin className="w-4 h-4" />
                 {rec.location}
@@ -183,13 +183,10 @@ const TravelPlanner = () => {
                   ))}
                 </div>
               </div>
-              <div className="text-right text-red-600 font-bold mt-4">
-                {rec.price}
-              </div>
+
             </div>
             <button 
               className="w-full mt-6 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors"
-              aria-label={`${rec.title}の詳細を見る`}
             >
               詳細を見る
             </button>
@@ -200,7 +197,6 @@ const TravelPlanner = () => {
       <button 
         onClick={() => setStep(1)}
         className="w-full border-2 border-red-600 text-red-600 hover:bg-red-50 py-2 px-4 rounded-lg transition-colors"
-        aria-label="条件を変更する"
       >
         条件を変更する
       </button>
